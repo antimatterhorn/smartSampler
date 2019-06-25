@@ -30,7 +30,7 @@ def getHs(y1,y2,nNeighbor):
         ra = 0
         for j in range(nNeighbor):
             ra+=rr[j]/nNeighbor
-        #ra = rr[nNeighbor]
+        ra = rr[nNeighbor-1] # simply setting radius to distance to furthest neighbor
         r[i] = ra
         w[i] = ra**(-2)
     return r,w
@@ -43,7 +43,7 @@ numInputs = 2
 
 
 numSamples = 100
-nNeighbor  = 25
+nNeighbor  = 10
 
 y1min = 1.e25
 y1max = -1.e25
