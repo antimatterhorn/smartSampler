@@ -8,7 +8,7 @@ from math import *
 
 #want to find xi that puts me in yi = 10+-5
 
-def getHs(y1,y2,nNeighbor):
+def getHs(y1,y2,nNeighbor,nlist):
     n = len(y1)
     r = np.zeros(n)
     w = np.zeros(n)
@@ -23,7 +23,7 @@ def getHs(y1,y2,nNeighbor):
                 yj2 = ys2[j]
                 xij = yj1-yi1
                 yij = yj2-yi2
-                rij = sqrt(xij**2+yij**2)
+                rij = sqrt(xij**2 + yij**2)
                 rr[k] = rij
                 k+=1
         rr = np.sort(rr)
@@ -32,7 +32,7 @@ def getHs(y1,y2,nNeighbor):
             ra+=rr[j]/nNeighbor
         ra = rr[nNeighbor-1] # simply setting radius to distance to furthest neighbor
         r[i] = ra
-        w[i] = ra**(-2)
+        w[i] = ra**(2)
     return r,w
 
 def newSamples(N,y1,y2,xarray,yi1,yi2):
@@ -42,8 +42,8 @@ def newSamples(N,y1,y2,xarray,yi1,yi2):
 numInputs = 2
 
 
-numSamples = 100
-nNeighbor  = 10
+numSamples = 400
+nNeighbor  = 20
 
 y1min = 1.e25
 y1max = -1.e25
@@ -53,6 +53,7 @@ ys1 = np.zeros(numSamples)
 ys2 = np.zeros(numSamples)
 xs = np.zeros([numSamples,numInputs])
 weights = np.zeros(numSamples)
+neighbors = []
 
 for i in range(numSamples):
     for j in range(numInputs):
@@ -72,10 +73,9 @@ xs = np.asarray(xs)
 ys1 = np.asarray(ys1)
 ys2 = np.asarray(ys2)
 
-plt.plot(ys1,ys2,"go")
 
-for i in range(numSamples):
-    print(xs[i],ys1[i],ys2[i],rs[i])
+#for i in range(numSamples):
+#    print(xs[i],ys1[i],ys2[i],rs[i])
 
 
 sSize = 50
@@ -89,19 +89,22 @@ for i in range(sSize):
         x = (y1max-y1min)*j/sSize+y1min
         y = (y2max-y2min)*i/sSize+y2min
         val = interpolate.interp(x,y,xs,ys1,ys2,rs,weights)
-        iMap[i][j] = val[1]
+        iMap[i][j] = val[0]
+        print(x,y,val)
 plt.pcolor(xx,yy,iMap)
+plt.colorbar()
 
 
+plt.scatter(ys1,ys2,s=rs*(y1max-y1min))
 '''
 numNewSamples = 10
 ynew1 = np.zeros(numNewSamples)
 ynew2 = np.zeros(numNewSamples)
 xnews = np.zeros([numNewSamples,numInputs])
 for i in range(numNewSamples):
-    yn1 = random.random()+20.0
-    yn2 = random.random()+200.0
-    xn  = interpolate.interp(yn1,yn2,xs,ys1,ys2,rs)
+    yn1 = random.random()*2+6.0
+    yn2 = random.random()*2+6.0
+    xn  = interpolate.interp(yn1,yn2,xs,ys1,ys2,rs,weights)
     xnews[i] = xn
     ynew1[i],ynew2[i] = calculation.func(xn)
     print(yn1,yn2,xn,ynew1[i],ynew2[i])
@@ -116,16 +119,16 @@ ys2 = np.append(ys2,ynew2)
 xs  = np.append(xs,xnews,axis=0)
 print(xs)
 
-rs = 0.5*getHs(ys1,ys2,nNeighbor)
+rs,weights = getHs(ys1,ys2,nNeighbor)
 
 numNewSamples = 5
 ynew1 = np.zeros(numNewSamples)
 ynew2 = np.zeros(numNewSamples)
 xnews = np.zeros([numNewSamples,numInputs])
 for i in range(numNewSamples):
-    yn1 = random.random()*10.0-15.0
-    yn2 = random.random()*6.0-8.0
-    xn  = interpolate.interp(yn1,yn2,xs,ys1,ys2,rs)
+    yn1 = random.random()*2+6.0
+    yn2 = random.random()*2+6.0
+    xn  = interpolate.interp(yn1,yn2,xs,ys1,ys2,rs,weights)
     xnews[i] = xn
     ynew1[i],ynew2[i] = calculation.func(xn)
     print(xn,ynew1[i],ynew2[i])
