@@ -33,6 +33,7 @@ class point:
         for i in range(nCount):
             self.neighbors.append(others[i][1])
         self.radius = others[nCount-1][0]
+        self.h      = self.radius*0.5
         self.weight = np.pi*self.radius**2
     def calcCorrection(self,points):
         n = len(points)

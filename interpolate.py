@@ -15,7 +15,7 @@ def interp(x,y,points):
         xx  = thisPos.x - x
         yy  = thisPos.y - y
         rij = vector2(xx,yy).magnitude()
-        hi  = points[i].radius*0.5
+        hi  = thisPoint.h
         for j in range(len(thisState)):
             xout[j] += kernel.W(rij/hi,hi)*thisWeight*thisCor*thisState[j]
     return xout
