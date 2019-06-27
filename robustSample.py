@@ -33,7 +33,7 @@ class point:
         for i in range(nCount):
             self.neighbors.append(others[i][1])
         self.radius = others[nCount-1][0]
-        self.h      = self.radius*0.5
+        self.h      = self.radius
         self.weight = np.pi*self.radius**2
     def calcCorrection(self,points):
         n = len(points)
@@ -45,7 +45,11 @@ class point:
             weights += thisWeight
         self.correction = 1.0/weights
 
-numPoints = 200
+do_Corrections  = True
+do_Map          = True
+do_NewSample    = False
+
+numPoints = 1000
 nNeighbor = 20           
 numInputs = 2
 points = []
@@ -57,7 +61,7 @@ ymax = -1.e25
 
 xs = np.zeros(numPoints)
 ys = np.zeros(numPoints)
-
+# populate initial sample
 for i in range(numPoints):
     state = np.zeros(numInputs)
     for j in range(numInputs):
@@ -71,17 +75,20 @@ for i in range(numPoints):
     ymax = max(y,ymax)
     pos = vector2(x,y)
     points.append(point(i,pos,state))
+# construct neighbor sets
 for i in range(numPoints):
     thisPoint = points[i]
     thisPoint.updateNeighbors(points,nNeighbor)
-for i in range(numPoints):
-    thisPoint = points[i]
-    thisPoint.calcCorrection(points)
+# calculate the 0th order corrections
+if do_Corrections:
+    for i in range(numPoints):
+        thisPoint = points[i]
+        thisPoint.calcCorrection(points)
 
 
 
-makeMap = True
-if makeMap:
+
+if do_Map:
     sSize = 50
     iMap = np.zeros([sSize,sSize])
     xx = np.linspace(xmin,xmax,sSize)
@@ -97,8 +104,8 @@ if makeMap:
     plt.pcolor(xx,yy,iMap)
     plt.colorbar()
 
-sampleNew = False
-if sampleNew:
+
+if do_NewSample:
     numNewSamples = 10
     numPoints = len(points)
     newPoints = []
