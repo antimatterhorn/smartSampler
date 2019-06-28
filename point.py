@@ -27,8 +27,9 @@ class point:
         others.sort()
         for i in range(nCount):
             self.neighbors.append(others[i][1])
-        self.radius = others[nCount-1][0]
-        self.h      = self.radius
+        #self.radius = others[nCount-1][0]
+        self.radius = others[0][0]
+        self.h      = self.radius*3.0
         self.mass   = 1.0
         self.volume = np.pi*self.radius**2
     def calcCorrection(self,points):

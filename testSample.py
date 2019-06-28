@@ -12,19 +12,20 @@ do_Corrections  = True
 do_Map          = True
 do_NewSample    = False
 
-numPoints = 1000
+numPoints = 100
 nNeighbor = 20           
 numInputs = 2
 points = []
 
-xmin = 1.e25
-xmax = -1.e25
-ymin = 1.e25
-ymax = -1.e25
+xmin = -2.
+xmax = 10.
+ymin = -2.
+ymax = 10.
 
+'''
+# populate initial sample
 xs = np.zeros(numPoints)
 ys = np.zeros(numPoints)
-# populate initial sample
 for i in range(numPoints):
     state = np.zeros(numInputs)
     for j in range(numInputs):
@@ -39,6 +40,58 @@ for i in range(numPoints):
     ymax = max(y,ymax)
     pos = vector2(x,y)
     points.append(point(i,pos,state))
+'''
+
+
+numPoints = 4
+nNeighbor = 3
+xs = np.zeros(numPoints)
+ys = np.zeros(numPoints)
+
+i = 0
+x = 2.0
+y = 2.0
+state = np.zeros(numPoints)
+for j in range(numInputs):
+    state[j] = 1.0
+xs[i] = x
+ys[i] = y
+pos = vector2(x,y)
+points.append(point(i,pos,state))
+
+i += 1
+x = 6.0
+y = 6.0
+state = np.zeros(numPoints)
+for j in range(numInputs):
+    state[j] = 1.0
+xs[i] = x
+ys[i] = y
+pos = vector2(x,y)
+points.append(point(i,pos,state))
+
+i += 1
+x = 2.0
+y = 6.0
+state = np.zeros(numPoints)
+for j in range(numInputs):
+    state[j] = 1.0
+xs[i] = x
+ys[i] = y
+pos = vector2(x,y)
+points.append(point(i,pos,state))
+
+i += 1
+x = 6.0
+y = 2.0
+state = np.zeros(numPoints)
+for j in range(numInputs):
+    state[j] = 1.0
+xs[i] = x
+ys[i] = y
+pos = vector2(x,y)
+points.append(point(i,pos,state))
+
 # construct neighbor sets
 for i in range(numPoints):
     thisPoint = points[i]
