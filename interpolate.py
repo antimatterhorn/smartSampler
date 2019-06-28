@@ -12,10 +12,10 @@ def interp(x,y,points):
         thisPos     = thisPoint.position
         thisCor     = thisPoint.correction
         thisWeight  = thisPoint.weight
-        xx  = thisPos.x - x
-        yy  = thisPos.y - y
-        rij = vector2(xx,yy).magnitude()
-        hi  = thisPoint.h
+        xx          = thisPos.x - x
+        yy          = thisPos.y - y
+        rij         = vector2(xx,yy).magnitude()
+        hi          = thisPoint.h
         for j in range(len(thisState)):
             xout[j] += kernel.W(rij/hi,hi)*thisWeight*thisCor*thisState[j]
     return xout

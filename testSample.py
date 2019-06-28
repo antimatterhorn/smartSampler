@@ -28,8 +28,9 @@ ys = np.zeros(numPoints)
 for i in range(numPoints):
     state = np.zeros(numInputs)
     for j in range(numInputs):
-        state[j] = random.random()*10.0
-    x,y = calculation.func(state)
+        state[j] = 1.0
+    x = random.random()*10.0
+    y = random.random()*10.0
     xs[i] = x
     ys[i] = y
     xmin = min(x,xmin)
@@ -48,6 +49,8 @@ if do_Corrections:
     for i in range(numPoints):
         thisPoint = points[i]
         thisPoint.calcCorrection(points)
+
+
 
 
 if do_Map:
