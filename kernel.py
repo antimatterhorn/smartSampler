@@ -4,6 +4,7 @@ from math import *
 def W(e,h):
 	e = abs(e) #protection
 	a = 10.0/(7.0*np.pi*h**2)
+	#a = 1.0/(np.pi*h**3)
 	if e>= 2.0:
 		return 0
 	elif e>=1.0:
