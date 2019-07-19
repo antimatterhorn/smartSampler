@@ -4,6 +4,7 @@ from sklearn.tree import DecisionTreeRegressor
 import random
 import matplotlib.pyplot as plt
 from math import *
+import downSelect
 
 
 def myFunc(x):
@@ -25,33 +26,13 @@ for i in range(numSamples):
     y_train[i][0],y_train[i][1] = xs[i],ys[i]
 
 plt.scatter(xs,ys,c='black',marker='+')
-#regr_1 = DecisionTreeRegressor(max_depth=2)
-#regr_2 = DecisionTreeRegressor(max_depth=5)
 regr_3 = DecisionTreeRegressor(max_depth=34)
-#regr_1.fit(x_train, y_train)
-#regr_2.fit(x_train, y_train)
 regr_3.fit(x_train, y_train)
 
-'''
-x_test = np.zeros([numNewPoints,3])
-y_test = np.zeros([numNewPoints,2])
-for i in range(len(x_test)):
-    x_test[i][0] = random.random()*10.0
-    x_test[i][1] = random.random()*10.0
-    x_test[i][2] = random.random()*10.0
-    y_test[i][0],y_test[i][1],y_test[i][2],y_test[i][3] = myFunc(x_test[i])
-print(x_test,y_test)
-
-y_1 = regr_1.predict(x_test)
-y_2 = regr_2.predict(x_test)
-y_3 = regr_3.predict(x_test)
-print(y_test)
-print(y_3)
-'''
 
 # want points around [1.0,2.0]+-tol
 tol = 2.0
-numNewPoints = 50
+numNewPoints = 500
 numAccepted = 0
 x_test = np.zeros([numNewPoints,3])
 y_test = np.zeros([numNewPoints,2])
@@ -67,13 +48,17 @@ while numAccepted < numNewPoints:
     x_test[numAccepted] = xx
     xs[numAccepted] = yy[0][0]
     ys[numAccepted] = yy[0][1]
-    print(xs[numAccepted],ys[numAccepted],xx)
+    #print(xs[numAccepted],ys[numAccepted],xx)
     numAccepted += 1
-plt.plot(xs,ys,"ro")
-xs = np.zeros(numNewPoints)
-ys = np.zeros(numNewPoints)
-for i in range(numNewPoints):
-  xs[i],ys[i] = myFunc(x_test[i])
+
+x_test_down = downSelect.down(x_test,25)
+
+
+#plt.plot(xs,ys,"ro")
+xs = np.zeros(25)
+ys = np.zeros(25)
+for i in range(25):
+  xs[i],ys[i] = myFunc(x_test_down[i])
 plt.scatter(xs,ys,c='blue',marker='s')
 plt.xlim(-10,20)
 plt.ylim(-10,20)
